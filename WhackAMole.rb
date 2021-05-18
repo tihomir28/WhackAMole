@@ -8,7 +8,8 @@ class Mole < Gosu::Window
         @hammer = Gosu::Image.new('Sprites/hammer.png')
         @ruby = Gosu::Image.new('Sprites/ruby.png')
         @font = Gosu::Font.new(30)
-        @time = 0
+        @Final_Screen = Gosu::Font.new(60)
+        @time = 200
         @score = 0
         @x_coordinate = 0
         @y_coordinate = 0
@@ -16,6 +17,7 @@ class Mole < Gosu::Window
         @velocity_y = 2
         @ruby_visibility_counter = 0
         @ruby_visibility = true
+        @end_game = false
         
 
     end
@@ -34,25 +36,29 @@ class Mole < Gosu::Window
         
         @ruby_visibility_counter+=1
         
-        if @ruby_visibility_counter >= 120
+        if @ruby_visibility_counter == 120
             @ruby_visibility = false
         end
-        if @ruby_visibility_counter >= 240
+        if @ruby_visibility_counter == 240
             @ruby_visibility = true
             @ruby_visibility_counter = 0
         end
-
+        @time -= 1
 
     end
 
     def draw
         @hammer.draw(mouse_x-80,mouse_y-38,2)
         @font.draw("Score: #{@score}",0,0,0)
-        @font.draw("Time left: #{@time}",620,0,0)
+        @font.draw("Time left: #{@time/60}",620,0,0)
         if @ruby_visibility
             @ruby.draw(@x_coordinate-41,@y_coordinate-30,1)
         end    
-        
+        if @time <= 0
+            @font.draw("Game over",400,300,2)
+            @end_game = true
+
+        end
 
 
     end
